@@ -7,12 +7,15 @@
         android:id="@+id/PrintshopName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="2dp"
+        android:textSize="24dp"
         android:textAppearance="?attr/textAppearanceListItem" />
     <TextView
         android:id="@+id/PrintshopAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_margin="2dp"
+        android:textSize="18dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:gravity="fill_horizontal"/>
 </LinearLayout>

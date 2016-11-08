@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ispu442.mobileprint.R;
-import ispu442.mobileprint.fragments.PrintShopsFragment.OnListFragmentInteractionListener;
+import ispu442.mobileprint.fragments.PrintShopsFragment.OnPrintShopItemClick;
 import ispu442.mobileprint.models.Printshop;
 
 import java.util.List;
@@ -15,9 +15,9 @@ import java.util.List;
 public class PrintShopsRecyclerViewAdapter extends RecyclerView.Adapter<PrintShopsRecyclerViewAdapter.ViewHolder> {
 
     private final List<Printshop> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnPrintShopItemClick mListener;
 
-    public PrintShopsRecyclerViewAdapter(List<Printshop> items, OnListFragmentInteractionListener listener) {
+    public PrintShopsRecyclerViewAdapter(List<Printshop> items, OnPrintShopItemClick listener) {
         mValues = items;
         mListener = listener;
     }
@@ -39,9 +39,7 @@ public class PrintShopsRecyclerViewAdapter extends RecyclerView.Adapter<PrintSho
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onPrintShopItemClick(holder.mItem);
                 }
             }
         });
