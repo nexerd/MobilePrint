@@ -1,5 +1,6 @@
 package ispu442.mobileprint.activities;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import ispu442.mobileprint.R;
+import ispu442.mobileprint.contolers.UserController;
 import ispu442.mobileprint.fragments.OrdersFragment;
 import ispu442.mobileprint.fragments.PrintShopsFragment;
 import ispu442.mobileprint.models.Order;
@@ -30,8 +32,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ListView l = (ListView)findViewById(R.id.MainPanelList);
+        ListView l = (ListView) findViewById(R.id.MainPanelList);
 
         l.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu));
         l.setOnItemClickListener(this);
@@ -43,21 +44,23 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
         getSupportActionBar().setTitle(menu[0]);
 
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.MainPanel);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.MainPanel);
+        if (!UserController.IsSignedIn()) {
+            Intent intent = new Intent(this, AuthActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onPrintShopItemClick(Printshop item)
     {
-        Toast toast = Toast.makeText(this, item.Name + " is clicked", Toast.LENGTH_LONG);
-        toast.show();
+        Toast.makeText(this, item.Name + " is clicked", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onOrderItemClick(Order item)
     {
-        Toast toast =Toast.makeText(this, item.Hash + " is clicked", Toast.LENGTH_LONG);
-        toast.show();
+        Toast.makeText(this, item.Hash + " is clicked", Toast.LENGTH_LONG).show();
     }
 
     @Override

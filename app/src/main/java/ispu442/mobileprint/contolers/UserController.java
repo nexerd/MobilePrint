@@ -1,6 +1,7 @@
 package ispu442.mobileprint.contolers;
 
 import ispu442.mobileprint.models.User;
+import ispu442.mobileprint.utilities.UserHelper;
 
 public class UserController {
     private static User user = null;
@@ -12,7 +13,8 @@ public class UserController {
 
     public static Boolean SignIn(String login, String password)
     {
-        return false;
+        user = UserHelper.SignIn(login, password);
+        return user != null;
     }
 
 }
