@@ -11,6 +11,8 @@ public class UserController {
         return user != null;
     }
 
+    public static String UserName() { return user != null ? user.Name : null; }
+
     public static Boolean SignIn(String login, String password)
     {
         user = UserHelper.SignIn(login, password);

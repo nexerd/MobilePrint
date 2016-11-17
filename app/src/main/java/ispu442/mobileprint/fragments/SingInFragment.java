@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import ispu442.mobileprint.R;
 import ispu442.mobileprint.contolers.UserController;
+import ispu442.mobileprint.utilities.AsyncAction;
 
 public class SingInFragment extends Fragment {
 
@@ -73,10 +74,25 @@ public class SingInFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(getContext(), "Вход", Toast.LENGTH_LONG).show();
+                AsyncAction act = new AsyncAction(new AsyncAction.Action() {
+                    @Override
+                    public void Execute()
+                    {
+                        UserController.SignIn(Login.getText().toString(), Passord.getText().toString());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String name = UserController.UserName();
+                                if (name != null    )
+                                    Toast.makeText(getContext(), "Привет, " + name, Toast.LENGTH_LONG).show();
+                                else
+                                    Toast.makeText(getContext(), "Проблемы с авторизацией", Toast.LENGTH_LONG).show();
+                            }
+                        });
 
-                FuckingAsyncTask f = new FuckingAsyncTask();
-                f.execute(Login.getText().toString(), Passord.getText().toString());
+                    }
+
+                });
 
             }
         });
@@ -112,27 +128,6 @@ public class SingInFragment extends Fragment {
 
     public interface OnSignUpButtonClick {
         void onSignUpButtonClick();
-    }
-}
-
-class FuckingAsyncTask extends AsyncTask<String, Void, Void> {
-
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected Void doInBackground(String... params) {
-        UserController.SignIn(params[0], params[1]);
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void result) {
-        super.onPostExecute(result);
-
     }
 }
 

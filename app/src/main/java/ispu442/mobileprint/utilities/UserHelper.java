@@ -11,6 +11,15 @@ public class UserHelper {
 
     public static final String SignInUrl = "user/SignIn";
 
+    private static User GetUserFromJSON(String jsonString) throws JSONException
+    {
+        JSONObject userJSON = new JSONObject(jsonString);
+        return new User(userJSON.getString("name"),
+                userJSON.getString("login"),
+                userJSON.getString("password"),
+                userJSON.getInt("id"));
+    }
+
     public static User SignIn(String login, String password)
     {
         JSONObject jsonObj = new JSONObject();
@@ -23,17 +32,25 @@ public class UserHelper {
         {
             String str = e.getMessage();
         }
-
+        String responseString = "";
         try
         {
-            HttpHelper.POST(SignInUrl, jsonObj.toString());
+            responseString = HttpHelper.POST(SignInUrl, jsonObj.toString());
         }
         catch (IOException e)
         {
             String str = e.getMessage();
+            return null;
         }
-
-        return null;
+        try
+        {
+            return GetUserFromJSON(responseString);
+        }
+        catch (JSONException e)
+        {
+            String str = e.getMessage();
+            return null;
+        }
     }
 }
 
