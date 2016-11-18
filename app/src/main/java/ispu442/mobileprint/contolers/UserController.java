@@ -1,7 +1,7 @@
 package ispu442.mobileprint.contolers;
 
 import ispu442.mobileprint.models.User;
-import ispu442.mobileprint.utilities.UserHelper;
+import ispu442.mobileprint.network.UserHelper;
 
 public class UserController {
     private static User user = null;

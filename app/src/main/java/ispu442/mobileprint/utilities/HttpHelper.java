@@ -3,8 +3,14 @@ package ispu442.mobileprint.utilities;
 import android.util.Pair;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,14 +21,31 @@ import okhttp3.Response;
 
 public class HttpHelper {
 
-    public static final String url = "http://192.168.0.175:3000/";
+    private static final String url = "http://192.168.0.175:3000/mobile/";
 
-    public static final MediaType JSON
+    private static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
+
+    private static OkHttpClient client = new OkHttpClient.Builder()
+            .cookieJar(new CookieJar() {
+                private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
+                @Override
+                public void saveFromResponse(HttpUrl _url, List<Cookie> cookies) {
+                    cookieStore.put(url, cookies);
+                }
+
+                @Override
+                public List<Cookie> loadForRequest(HttpUrl _url) {
+                    List<Cookie> cookies = cookieStore.get(url);
+                    return cookies != null ? cookies : new ArrayList<Cookie>();
+                }
+            })
+            .build();
+
 
     public static String GET(String address) throws IOException
     {
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url + address)
                 .build();
@@ -32,7 +55,6 @@ public class HttpHelper {
 
     public static String POST(String address, String json)  throws IOException
     {
-        OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url + address)

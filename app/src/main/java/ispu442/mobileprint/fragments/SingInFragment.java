@@ -83,8 +83,11 @@ public class SingInFragment extends Fragment {
                             @Override
                             public void run() {
                                 String name = UserController.UserName();
-                                if (name != null    )
+                                if (name != null)
+                                {
                                     Toast.makeText(getContext(), "Привет, " + name, Toast.LENGTH_LONG).show();
+                                    getActivity().finish();
+                                }
                                 else
                                     Toast.makeText(getContext(), "Проблемы с авторизацией", Toast.LENGTH_LONG).show();
                             }

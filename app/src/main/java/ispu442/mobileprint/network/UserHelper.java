@@ -1,4 +1,4 @@
-package ispu442.mobileprint.utilities;
+package ispu442.mobileprint.network;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import ispu442.mobileprint.models.User;
+import ispu442.mobileprint.utilities.HttpHelper;
 
 public class UserHelper {
 

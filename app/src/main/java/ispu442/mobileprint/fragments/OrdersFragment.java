@@ -9,11 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.List;
 
 import ispu442.mobileprint.R;
 import ispu442.mobileprint.adapters.OrdersRecyclerViewAdapter;
 import ispu442.mobileprint.contolers.OrderController;
 import ispu442.mobileprint.models.Order;
+import ispu442.mobileprint.utilities.AsyncAction;
 
 public class OrdersFragment extends Fragment {
 
@@ -23,10 +27,8 @@ public class OrdersFragment extends Fragment {
     private int mColumnCount = 1;
     private OnOrderItemClick mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    RecyclerView recyclerView;
+
     public OrdersFragment() {
     }
 
@@ -57,13 +59,30 @@ public class OrdersFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new OrdersRecyclerViewAdapter(OrderController.GetOrders(), mListener));
+
+            AsyncAction act = new AsyncAction(new AsyncAction.Action(){
+                @Override
+                public void Execute()
+                {
+                    final List<Order> orders = OrderController.GetOrders();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (orders != null)
+                                recyclerView.setAdapter(new OrdersRecyclerViewAdapter(orders, mListener));
+                            else
+                                Toast.makeText(getContext(), "Не удалось получить список заказов.",
+                                        Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
         }
         return view;
     }
