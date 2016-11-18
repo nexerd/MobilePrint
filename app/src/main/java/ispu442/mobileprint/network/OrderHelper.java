@@ -18,7 +18,7 @@ public class OrderHelper {
 
     private static Order GetOrderFromJSON(JSONObject jsonObject) throws JSONException
     {
-        return new Order("some_hash",
+        return new Order(jsonObject.getString("hash"),
                 jsonObject.getString("filename"),
                 jsonObject.getInt("id"),
                 jsonObject.getInt("user_id"),

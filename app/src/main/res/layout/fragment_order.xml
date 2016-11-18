@@ -7,33 +7,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:textSize="24dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="?attr/textAppearanceListItem"/>
-    <TextView
-        android:id="@+id/OrderPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:textSize="24dp"
-        android:layout_toLeftOf="@id/OrderName"
-        android:layout_alignParentRight="true"
+        android:textSize="20dp"
+        android:layout_alignParentLeft="true"
         android:textAppearance="?attr/textAppearanceListItem"/>
     <TextView
         android:id="@+id/OrderStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:textSize="16dp"
-        android:layout_below="@id/OrderName"
-        android:layout_toRightOf="@id/OrderPrice"
+        android:textSize="18dp"
+        android:layout_toRightOf="@id/OrderName"
+        android:textAppearance="?attr/textAppearanceListItem"/>
+    <TextView
+        android:id="@+id/OrderPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:textSize="18dp"
+        android:layout_alignParentRight="true"
         android:textAppearance="?attr/textAppearanceListItem"/>
     <TextView
         android:id="@+id/OrderHash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:layout_below="@id/OrderStatus"
         android:layout_centerHorizontal="true"
         android:textAppearance="?attr/textAppearanceListItem"/>

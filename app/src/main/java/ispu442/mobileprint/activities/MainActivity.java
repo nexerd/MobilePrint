@@ -27,28 +27,55 @@ public class MainActivity extends AppCompatActivity
 {
 
     final String[] menu = {"Заказы", "Серсисы", "Выход"};
+    private ListView leftBarList;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ListView l = (ListView) findViewById(R.id.MainPanelList);
+        GetViews();
+        SetLeftBarList();
+        SubscribeViews();
+    }
 
-        l.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu));
-        l.setOnItemClickListener(this);
-
-        Fragment fragment = new PrintShopsFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_comtainer, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-        getSupportActionBar().setTitle(menu[0]);
-
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.MainPanel);
+    @Override
+    public void onStart()
+    {
+        super.onStart();
         if (!UserController.IsSignedIn()) {
             Intent intent = new Intent(this, AuthActivity.class);
             startActivity(intent);
         }
+        else
+        {
+            RunFragment(new OrdersFragment(), menu[0]);
+        }
+    }
+
+    private void GetViews()
+    {
+        leftBarList = (ListView) findViewById(R.id.MainPanelList);
+        drawerLayout = (DrawerLayout)findViewById(R.id.MainPanel);
+    }
+
+    private void SetLeftBarList()
+    {
+        leftBarList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu));
+    }
+
+    private void SubscribeViews()
+    {
+        leftBarList.setOnItemClickListener(this);
+    }
+
+    private void RunFragment(Fragment fragment, String nameFragment)
+    {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_comtainer, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        getSupportActionBar().setTitle(nameFragment);
     }
 
     @Override
@@ -66,25 +93,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-        Fragment fragment = null;
         switch (position)
         {
             case 0:
-                fragment = new OrdersFragment();
-                getSupportActionBar().setTitle(menu[0]);
+                RunFragment(new OrdersFragment(), menu[0]);
                 break;
             case 1:
-                fragment = new PrintShopsFragment();
-                getSupportActionBar().setTitle(menu[1]);
+                RunFragment(new PrintShopsFragment(), menu[1]);
+                break;
+            case 2:
+                finish();
                 break;
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_comtainer, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.MainPanel);
-        ListView l = (ListView)findViewById(R.id.MainPanelList);
-        drawerLayout.closeDrawer(l);
+        drawerLayout.closeDrawer(leftBarList);
     }
 }
