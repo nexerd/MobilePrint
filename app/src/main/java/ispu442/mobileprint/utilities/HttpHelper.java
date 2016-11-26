@@ -21,7 +21,9 @@ import okhttp3.Response;
 
 public class HttpHelper {
 
-    private static final String url = "http://192.168.0.175:3000/mobile/";
+    //private static final String url = "http://192.168.0.175:3000/mobile/";
+
+    private static final String url = "http://fastprint-ispu442.rhcloud.com/mobile/";
 
     private static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");

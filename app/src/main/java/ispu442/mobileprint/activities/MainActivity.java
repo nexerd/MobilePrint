@@ -19,24 +19,35 @@ import ispu442.mobileprint.fragments.OrdersFragment;
 import ispu442.mobileprint.fragments.PrintShopsFragment;
 import ispu442.mobileprint.models.Order;
 import ispu442.mobileprint.models.Printshop;
+import ispu442.mobileprint.services.OrderService;
 
 public class MainActivity extends AppCompatActivity
         implements ListView.OnItemClickListener,
         PrintShopsFragment.OnPrintShopItemClick,
-        OrdersFragment.OnOrderItemClick
+        OrdersFragment.OnOrderItemClick,
+        OrderService.OnOrdersUpdate
 {
 
     final String[] menu = {"Заказы", "Серсисы", "Выход"};
     private ListView leftBarList;
     private DrawerLayout drawerLayout;
+    private Fragment currentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StartOrderService();
         setContentView(R.layout.activity_main);
         GetViews();
         SetLeftBarList();
         SubscribeViews();
+    }
+
+    private void StartOrderService()
+    {
+        OrderService.SetContext(this);
+        Intent intent = new Intent(this, OrderService.class);
+        startService(intent);
     }
 
     @Override
@@ -76,18 +87,19 @@ public class MainActivity extends AppCompatActivity
         transaction.addToBackStack(null);
         transaction.commit();
         getSupportActionBar().setTitle(nameFragment);
+        currentFragment = fragment;
     }
 
     @Override
     public void onPrintShopItemClick(Printshop item)
     {
-        Toast.makeText(this, item.Name + " is clicked", Toast.LENGTH_LONG).show();
+        RunFragment(OrdersFragment.newInstance(item.Id), menu[0]);
     }
 
     @Override
     public void onOrderItemClick(Order item)
     {
-        Toast.makeText(this, item.Hash + " is clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, item.FileName + " is clicked", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -96,15 +108,24 @@ public class MainActivity extends AppCompatActivity
         switch (position)
         {
             case 0:
-                RunFragment(new OrdersFragment(), menu[0]);
+                RunFragment(OrdersFragment.newInstance(), menu[position]);
                 break;
             case 1:
-                RunFragment(new PrintShopsFragment(), menu[1]);
+                RunFragment(PrintShopsFragment.newInstance(), menu[position]);
                 break;
             case 2:
                 finish();
                 break;
         }
         drawerLayout.closeDrawer(leftBarList);
+    }
+
+    @Override
+    public void UpdateOrders()
+    {
+        if (currentFragment.getClass() == OrdersFragment.class)
+        {
+            ((OrdersFragment)currentFragment).UpdateOrders();
+        }
     }
 }
