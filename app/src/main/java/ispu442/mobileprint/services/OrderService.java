@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import ispu442.mobileprint.broadcastrecivers.OrdersUpdateReceiver;
 import ispu442.mobileprint.contolers.OrderController;
+import ispu442.mobileprint.contolers.UserController;
 import ispu442.mobileprint.utilities.AsyncAction;
 import ispu442.mobileprint.utilities.NotificationHelper;
 
@@ -25,9 +27,10 @@ public class OrderService extends Service {
                 while (System.currentTimeMillis() < endTime) {
                     synchronized (this) {
                         try {
-                            if (OrderController.UpdateOrders())
+                            if (UserController.IsSignedIn() && OrderController.UpdateOrders())
                             {
-                                NotificationHelper.OrdersUpdateNotify(context);
+                                Intent intent = new Intent(OrdersUpdateReceiver.ACTION_NAME);
+                                sendBroadcast(intent);
                                 ((OnOrdersUpdate)context).UpdateOrders();
                             }
                             wait(endTime - System.currentTimeMillis());

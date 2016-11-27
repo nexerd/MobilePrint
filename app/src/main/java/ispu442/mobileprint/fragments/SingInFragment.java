@@ -19,8 +19,6 @@ import ispu442.mobileprint.utilities.AsyncAction;
 
 public class SingInFragment extends Fragment {
 
-    private OnSignUpButtonClick mListener;
-
     private Button SingUpButton;
     private Button EnterButton;
     private CheckBox Remember;
@@ -53,7 +51,6 @@ public class SingInFragment extends Fragment {
     private void GetViews()
     {
         View view = getView();
-        SingUpButton = (Button) view.findViewById(R.id.SingInSignUpButton);
         EnterButton = (Button) view.findViewById(R.id.SingInEnterButton);
         Remember = (CheckBox) view.findViewById(R.id.SingInRemember);
         Login = (EditText) view.findViewById(R.id.SingInLogin);
@@ -62,14 +59,6 @@ public class SingInFragment extends Fragment {
 
     private void SubscribeViews()
     {
-        SingUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                mListener.onSignUpButtonClick();
-            }
-        });
-
         EnterButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
@@ -112,25 +101,14 @@ public class SingInFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnSignUpButtonClick) {
-            mListener = (OnSignUpButtonClick) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnSignUpButtonClick");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         SingUpButton = null;
         EnterButton = null;
         Remember = null;
-    }
-
-    public interface OnSignUpButtonClick {
-        void onSignUpButtonClick();
     }
 }
 

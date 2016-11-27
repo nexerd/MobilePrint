@@ -9,8 +9,7 @@ import android.widget.Toast;
 import ispu442.mobileprint.R;
 import ispu442.mobileprint.fragments.SingInFragment;
 
-public class AuthActivity extends AppCompatActivity
-    implements SingInFragment.OnSignUpButtonClick {
+public class AuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +21,5 @@ public class AuthActivity extends AppCompatActivity
         transaction.replace(R.id.fragment_comtainer, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    @Override
-    public void onSignUpButtonClick() {
-        Toast toast = Toast.makeText(this, "Кликнули на кнопку регистрации", Toast.LENGTH_LONG);
-        toast.show();
     }
 }

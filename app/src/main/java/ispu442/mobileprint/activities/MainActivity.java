@@ -1,6 +1,8 @@
 package ispu442.mobileprint.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import ispu442.mobileprint.R;
+import ispu442.mobileprint.broadcastrecivers.OrdersUpdateReceiver;
 import ispu442.mobileprint.contolers.UserController;
 import ispu442.mobileprint.fragments.OrdersFragment;
 import ispu442.mobileprint.fragments.PrintShopsFragment;
@@ -32,15 +35,23 @@ public class MainActivity extends AppCompatActivity
     private ListView leftBarList;
     private DrawerLayout drawerLayout;
     private Fragment currentFragment = null;
+    private BroadcastReceiver ordersUpdateReciver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SetOrdersReciver();
         StartOrderService();
         setContentView(R.layout.activity_main);
         GetViews();
         SetLeftBarList();
         SubscribeViews();
+    }
+
+    private void SetOrdersReciver()
+    {
+        ordersUpdateReciver = new OrdersUpdateReceiver();
+        registerReceiver(ordersUpdateReciver, new IntentFilter(OrdersUpdateReceiver.ACTION_NAME));
     }
 
     private void StartOrderService()
